@@ -13,17 +13,12 @@
     <artifactId>poster_back</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <packaging>pom</packaging>
 
     <name>poster_back</name>
     <description>Spring REST-ful application. An API that provides an access to the platform
-        for publishing and watching articles and information</description>
+        for publishing and watching articles and information
+    </description>
 
-    <modules>
-        <module>ControllerModule</module>
-        <module>DaoModule</module>
-        <module>EntityModule</module>
-    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -31,16 +26,75 @@
         <java.version>17</java.version>
 
         <spring_security_version>6.0.3</spring_security_version>
+        <postgresql_version>42.5.4</postgresql_version>
     </properties>
 
 
     <dependencies>
-        <!--		Spring		-->
+
+
+        <!--     SPRING BOOT        -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
+
+        <!--      AOP      -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+
+        <!--		DATA		-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql_version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+
+        <!--        		Security        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
 
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.boot</groupId>-->
@@ -59,16 +113,6 @@
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.boot</groupId>-->
         <!--            <artifactId>spring-boot-starter-mail</artifactId>-->
-        <!--        </dependency>-->
-
-        <!--		Security        -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-oauth2-client</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-security</artifactId>-->
         <!--        </dependency>-->
 
 
@@ -99,7 +143,7 @@
                 <version>3.1.1</version>
                 <configuration>
                     <mainClass>
-                        ControllerModule.src.main.java.com.easy2remember.controllerModule.PosterBackApplication
+                        ControllerModule.src.main.java.com.easy2remember.PosterBackApplication
                     </mainClass>
                 </configuration>
             </plugin>

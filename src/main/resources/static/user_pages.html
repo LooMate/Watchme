@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Pages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 300px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Intercept form submissions
+            $('form').submit(function (event) {
+                event.preventDefault(); // Prevent the form from submitting
+
+                // Get the form data and convert it to JSON
+                var formData = JSON.stringify($(this).serializeArray());
+
+                // Set the Content-Type header to application/json
+                var headers = {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                };
+
+                // Send the modified request
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: formData,
+                    headers: headers,
+                    success: function (response) {
+                        // Handle the success response
+                        console.log(response);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle the error response
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+
+        function convertPasswordToByteArray() {
+            var passwordInput = document.getElementById('password');
+            var password = passwordInput.value;
+            var passwordArray = [];
+
+            // Convert password string to byte array
+            for (var i = 0; i < password.length; i++) {
+                passwordArray.push(password.charCodeAt(i));
+            }
+
+
+            // Set the hidden field value to the JSON payload
+            document.getElementById('password').value = '[' + passwordArray + ']';
+
+            // Submit the form
+            document.getElementById('userForm').submit();
+        }
+    </script>
+</head>
+<body>
+<h1>User Registration</h1>
+<form action="http://localhost:8080/api/user/register" method="post" enctype="multipart/form-data">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <label for="password">Password:</label>
+    <input id="password" name="password" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" required><br><br>
+
+    <label for="usedReferralCode">usedReferralCode:</label>
+    <input type="text" name="usedReferralCode" id="usedReferralCode"><br><br>
+    <!-- Add a hidden input field for usedReferralCode -->
+
+    <input type="hidden" name="timeZone" value="Warszaw"><!-- Add a hidden input field for isInvited -->
+    <input type="hidden" name="invited" value="false"><!-- Add a hidden input field for isInvited -->
+
+    <input type="hidden" name="invitedFrom" value=""><!-- Add a hidden input field for invitedFrom -->
+
+    <input type="hidden" name="enabled" value="true"><!-- Add a hidden input field for isEnabled -->
+
+    <input type="submit" value="Register" onclick="convertPasswordToByteArray()">
+</form>
+
+<hr>
+
+<h1>Show User</h1>
+<form action="http://localhost:8080/api/user/show/{username}" method="get" enctype="text/plain">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <input type="submit" value="Show">
+</form>
+
+<hr>
+
+<h1>Show Subscribers</h1>
+<form action="http://localhost:8080/api/user/{publisherName}/subscribers" method="get" enctype="text/plain">
+    <label for="publisherName">Publisher Name:</label>
+    <input type="text" id="publisherName" name="publisherName" required><br><br>
+
+    <input type="submit" value="Show Subscribers">
+</form>
+
+<hr>
+
+<h1>Update User</h1>
+<form action="http://localhost:8080/api/user/update/" method="patch" enctype="text/plain">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <!-- Add input fields for other user properties you want to update -->
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email"><br><br>
+
+    <!-- Add more fields as needed -->
+
+    <input type="submit" value="Update">
+</form>
+
+<hr>
+
+<h1>Delete User</h1>
+<form action="http://localhost:8080/api/user/delete" method="delete" enctype="text/plain">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <input type="submit" value="Delete">
+</form>
+
+<hr>
+
+<h1>Subscribe User</h1>
+<form action="http://localhost:8080/api/user/subscribe" method="patch" enctype="text/plain">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <label for="publisherName">Publisher Name:</label>
+    <input type="text" id="publisherName" name="publisherName" required><br><br>
+
+    <input type="submit" value="Subscribe">
+</form>
+
+<hr>
+
+<h1>Unsubscribe User</h1>
+<form action="http://localhost:8080/api/user/unsubscribe" method="patch" enctype="text/plain">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <label for="publisherName">Publisher Name:</label>
+    <input type="text" id="publisherName" name="publisherName" required><br><br>
+
+    <input type="submit" value="Unsubscribe">
+</form>
+</body>
+</html>
